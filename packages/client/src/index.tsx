@@ -6,6 +6,9 @@ import mudConfig from "contracts/mud.config";
 import { RootPage } from "./pages/root";
 import { ErrorPage } from "./pages/error";
 import { App } from "./App";
+import { TemplateCreate } from "./TemplateCreate";
+import { TemplateMint } from "./TemplateMint";
+import { Derivative } from "./Derivative";
 import "../globals.css";
 
 const router = createBrowserRouter([
@@ -17,6 +20,18 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <App />,
+      },
+      {
+        path: "/template",
+        element: <TemplateCreate />,
+      },
+      {
+        path: "/template/:templateId",
+        element: <TemplateMint />,
+      },
+      {
+        path: "/derivative",
+        element: <Derivative />,
       },
     ],
   },
