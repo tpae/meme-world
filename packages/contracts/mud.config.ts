@@ -1,18 +1,28 @@
-import { mudConfig } from "@latticexyz/world/register";
-import { resolveTableId } from "@latticexyz/config";
+import { mudConfig, resolveTableId } from "@latticexyz/world/register";
 
 export default mudConfig({
   tables: {
+    GameConfig: {
+      keySchema: {},
+      dataStruct: false,
+      valueSchema: {
+        contractAddress: "address",
+        templateAddress: "address",
+      },
+    },
     Creator: "address",
     Name: "string",
+    Caption: "string",
     PathKey: "bytes32",
     Path: "uint256[]",
     Minted: "bool",
+    TemplateKey: "bytes32",
+    Reserved: "bool",
     TemplateIdIncrement: {
       keySchema: {},
       valueSchema: "uint256"
     },
-    DerivativeIncrement: {
+    DerivativeIdIncrement: {
       keySchema: {},
       valueSchema: "uint256"
     },

@@ -15,12 +15,4 @@ interface ITemplateSystem {
   function mintTemplate(uint256 templateId) external;
 
   function templateTokenURI(uint256 tokenId) external view returns (string memory);
-
-  function floatize(uint256 number) external pure returns (string memory);
-
-  function pack(uint128 a, uint128 b) external pure returns (uint256);
-
-  function unpack(uint256 packed) external pure returns (uint128 a, uint128 b);
-
-  function getPackedPaths(uint128[][] calldata paths) external pure returns (uint256[] memory packedPaths);
 }

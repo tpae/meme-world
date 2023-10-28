@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@latticexyz/cli": "2.0.0-next.12",
-    "@latticexyz/config": "^1.42.0",
     "@latticexyz/schema-type": "2.0.0-next.12",
     "@latticexyz/store": "2.0.0-next.12",
     "@latticexyz/world": "2.0.0-next.12",
