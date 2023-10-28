@@ -42,16 +42,17 @@ contract TemplateSystem is System {
 
     function templateTokenURI(uint256 tokenId) public view returns (string memory) {
         bytes32 entityKey = templateIdToEntityKey(tokenId);
+        string memory svgPaths = generateSVGPaths(entityKey);
         string memory name = Name.get(entityKey);
-        string memory image = generateSVGPaths(entityKey);
-        bytes memory svg = abi.encodePacked(
+
+        bytes memory image = abi.encodePacked(
             "data:image/svg+xml;base64,",
             Base64.encode(
                 bytes(
                     abi.encodePacked(
                         '<?xml version="1.0" encoding="UTF-8"?>',
                         '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 420 420" width="420" height="420">',
-                        image,
+                        svgPaths,
                         "</svg>"
                     )
                 )
@@ -67,7 +68,7 @@ contract TemplateSystem is System {
                             '{"name":"',
                             name,
                             '", "image":"',
-                            svg,
+                            image,
                             '", "description": "This can be used on memeworld.lol to create your own memes"}'
                         )
                     )
@@ -84,7 +85,7 @@ contract TemplateSystem is System {
         string memory output = "";
         for (uint256 i = 0; i < totalPaths; i++) {
             uint256[] memory path = Path.get(keysWithValue[i]);
-            output = string(abi.encodePacked(output, svgPath(generateSVGPath(path))));
+            output = string(abi.encodePacked(output, generateSVGPath(path)));
         }
 
         return svgGroup(output);
@@ -105,22 +106,20 @@ contract TemplateSystem is System {
                 output = string(
                     abi.encodePacked(
                         output,
-                        string(
-                            abi.encodePacked("M ", floatize(x), ",", floatize(y), " ", svgPackCurve(x, y, x, y, x, y))
-                        )
+                        string(abi.encodePacked("M ", floatize(x), ",", floatize(y), " ", packCurve(x, y, x, y, x, y)))
                     )
                 );
             } else {
                 (uint128 prevX, uint128 prevY) = unpack(path[i - 1]);
                 (uint128 currX, uint128 currY) = unpack(path[i]);
-                output = string(abi.encodePacked(output, svgPackCurve(prevX, prevY, currX, currY, currX, currY)));
+                output = string(abi.encodePacked(output, packCurve(prevX, prevY, currX, currY, currX, currY)));
             }
         }
 
-        return output;
+        return svgPath(output);
     }
 
-    function svgPackCurve(uint256 sX, uint256 xY, uint256 eX, uint256 eY, uint256 pointX, uint256 pointY)
+    function packCurve(uint256 sX, uint256 xY, uint256 eX, uint256 eY, uint256 pointX, uint256 pointY)
         internal
         pure
         returns (string memory)
@@ -155,8 +154,8 @@ contract TemplateSystem is System {
         return string(abi.encodePacked("<g>", children, "</g>"));
     }
 
-    function svgCircle(uint256 cx, uint256 cy) internal pure returns (string memory) {
-        return string(abi.encodePacked('<circle cx="', floatize(cx), '" cy="', floatize(cy), '"></circle>'));
+    function svgCircle(uint256 x, uint256 y) internal pure returns (string memory) {
+        return string(abi.encodePacked('<circle cx="', floatize(x), '" cy="', floatize(y), '"></circle>'));
     }
 
     function floatize(uint256 number) public pure returns (string memory) {
