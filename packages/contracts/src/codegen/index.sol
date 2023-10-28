@@ -5,8 +5,8 @@ pragma solidity >=0.8.21;
 
 import { Creator, CreatorTableId } from "./tables/Creator.sol";
 import { Name, NameTableId } from "./tables/Name.sol";
-import { Media, MediaTableId } from "./tables/Media.sol";
 import { PathKey, PathKeyTableId } from "./tables/PathKey.sol";
 import { Path, PathTableId } from "./tables/Path.sol";
-import { TemplateIncrement, TemplateIncrementTableId } from "./tables/TemplateIncrement.sol";
+import { Minted, MintedTableId } from "./tables/Minted.sol";
+import { TemplateIdIncrement, TemplateIdIncrementTableId } from "./tables/TemplateIdIncrement.sol";
 import { DerivativeIncrement, DerivativeIncrementTableId } from "./tables/DerivativeIncrement.sol";

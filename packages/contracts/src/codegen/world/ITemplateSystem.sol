@@ -10,9 +10,9 @@ pragma solidity >=0.8.21;
 interface ITemplateSystem {
   function createTemplate(string calldata name) external returns (uint256);
 
-  function drawPath(uint256 templateId, uint128[][] calldata paths) external;
+  function drawPaths(uint256 templateId, uint128[][] calldata paths) external;
 
-  function mintTemplate(string calldata name, string calldata media) external;
+  function mintTemplate(uint256 templateId) external;
 
   function templateTokenURI(uint256 tokenId) external view returns (string memory);
 

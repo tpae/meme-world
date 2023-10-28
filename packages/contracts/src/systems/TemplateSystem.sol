@@ -7,23 +7,24 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {PackedCounter} from "@latticexyz/store/src/PackedCounter.sol";
 import {getKeysWithValue} from "@latticexyz/world-modules/src/modules/keyswithvalue/getKeysWithValue.sol";
 import {getUniqueEntity} from "@latticexyz/world-modules/src/modules/uniqueentity/getUniqueEntity.sol";
-import {Media, Name, Creator, TemplateIncrement, Path, PathKeyTableId, PathKey} from "../codegen/index.sol";
+import {Name, Creator, TemplateIdIncrement, Path, PathKeyTableId, PathKey, Minted} from "../codegen/index.sol";
 import {templateIdToEntityKey} from "../entityKey.sol";
 
 contract TemplateSystem is System {
     function createTemplate(string calldata name) public returns (uint256) {
-        uint256 templateId = TemplateIncrement.get();
+        uint256 templateId = TemplateIdIncrement.get();
         bytes32 entityKey = templateIdToEntityKey(templateId);
 
-        Creator.set(entityKey, _msgSender());
         Name.set(entityKey, name);
-        TemplateIncrement.set(templateId + 1);
+        Creator.set(entityKey, _msgSender());
+        TemplateIdIncrement.set(templateId + 1);
 
         return templateId;
     }
 
-    function drawPath(uint256 templateId, uint128[][] calldata paths) public {
+    function drawPaths(uint256 templateId, uint128[][] calldata paths) public {
         bytes32 entityKey = templateIdToEntityKey(templateId);
+        require(!Minted.get(entityKey), "already minted");
         require(Creator.get(entityKey) == _msgSender(), "not the creator");
 
         bytes32 pathKey = getUniqueEntity();
@@ -31,13 +32,12 @@ contract TemplateSystem is System {
         PathKey.set(pathKey, entityKey);
     }
 
-    function mintTemplate(string calldata name, string calldata media) public {
-        uint256 tokenId = TemplateIncrement.get();
-        bytes32 entityKey = templateIdToEntityKey(tokenId);
+    function mintTemplate(uint256 templateId) public {
+        bytes32 entityKey = templateIdToEntityKey(templateId);
+        require(!Minted.get(entityKey), "already minted");
+        require(Creator.get(entityKey) == _msgSender(), "not the creator");
 
-        Creator.set(entityKey, _msgSender());
-        Name.set(entityKey, name);
-        Media.set(entityKey, media);
+        Minted.set(entityKey, true);
     }
 
     function templateTokenURI(uint256 tokenId) public view returns (string memory) {

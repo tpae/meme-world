@@ -5,10 +5,10 @@ export default mudConfig({
   tables: {
     Creator: "address",
     Name: "string",
-    Media: "string",
     PathKey: "bytes32",
     Path: "uint256[]",
-    TemplateIncrement: {
+    Minted: "bool",
+    TemplateIdIncrement: {
       keySchema: {},
       valueSchema: "uint256"
     },

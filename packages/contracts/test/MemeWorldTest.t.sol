@@ -33,7 +33,7 @@ contract MemeWorldTest is MudTest {
         paths[0] = path1;
         paths[1] = path2;
 
-        world.drawPath(templateId, paths);
+        world.drawPaths(templateId, paths);
 
         console.log(world.templateTokenURI(templateId));
     }
