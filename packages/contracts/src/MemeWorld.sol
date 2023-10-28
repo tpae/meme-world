@@ -20,7 +20,7 @@ contract MemeWorld is IMemeWorld, ERC721, AccessControl {
     }
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        return _world.templateTokenURI(tokenId);
+        return _world.derivativeTokenURI(tokenId);
     }
 
     function supportsInterface(bytes4 interfaceId)
