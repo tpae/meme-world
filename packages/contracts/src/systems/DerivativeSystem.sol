@@ -73,4 +73,8 @@ contract DerivativeSystem is DrawableSystem {
             )
         );
     }
+
+    function getContractAddress() public view returns (address) {
+        return GameConfig.getContractAddress();
+    }
 }

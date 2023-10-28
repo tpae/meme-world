@@ -77,4 +77,8 @@ contract TemplateSystem is DrawableSystem {
             )
         );
     }
+
+    function getTemplateAddress() public view returns (address) {
+        return GameConfig.getTemplateAddress();
+    }
 }

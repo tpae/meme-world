@@ -10,6 +10,7 @@ import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
 import IWorldAbi from "contracts/out/IWorld.sol/IWorld.abi.json";
+import IMemeWorldAbi from "contracts/out/IMemeWorld.sol/IMemeWorld.abi.json";
 import { createBurnerAccount, getContract, transportObserver, ContractWrite } from "@latticexyz/common";
 
 import { Subject, share } from "rxjs";
@@ -68,6 +69,22 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
+  const memeWorldContract = getContract({
+    address: await worldContract.read.getContractAddress(),
+    abi: IMemeWorldAbi,
+    publicClient,
+    walletClient: burnerWalletClient,
+    onWrite: (write) => write$.next(write),
+  });
+
+  const memeWorldTemplatesContract = getContract({
+    address: await worldContract.read.getTemplateAddress(),
+    abi: IMemeWorldAbi,
+    publicClient,
+    walletClient: burnerWalletClient,
+    onWrite: (write) => write$.next(write),
+  });
+
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
    * Uses the MUD indexer if available, otherwise falls back
@@ -120,6 +137,8 @@ export async function setupNetwork() {
     storedBlockLogs$,
     waitForTransaction,
     worldContract,
+    memeWorldContract,
+    memeWorldTemplatesContract,
     write$: write$.asObservable().pipe(share()),
   };
 }

@@ -15,4 +15,6 @@ interface ITemplateSystem {
   function mintTemplate(uint256 templateId) external;
 
   function templateTokenURI(uint256 tokenId) external view returns (string memory);
+
+  function getTemplateAddress() external view returns (address);
 }

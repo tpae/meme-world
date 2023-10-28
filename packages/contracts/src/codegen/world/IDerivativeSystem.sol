@@ -11,4 +11,6 @@ interface IDerivativeSystem {
   function mintDerivative(uint256 templateId, string calldata caption) external returns (uint256);
 
   function derivativeTokenURI(uint256 tokenId) external view returns (string memory);
+
+  function getContractAddress() external view returns (address);
 }
