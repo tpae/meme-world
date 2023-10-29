@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { keccak256, encodePacked } from "viem";
 import { useComponentValue } from "@latticexyz/react";
-import { Entity } from "@latticexyz/recs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMUD } from "../MUDContext";
 import { CardContent, Card } from "@/components/ui/card";
@@ -43,7 +41,10 @@ export const TemplateMint = () => {
 
   const fetchTemplateImage = useCallback(
     async (templateId: bigint) => {
-      const template = await getTemplateImage(templateId);
+      const templateEntityKey = templateIdToEntityKey(templateId);
+      const template = await getTemplateImage(
+        templateEntityKey as `0x${string}`
+      );
 
       setTemplateImage(template);
     },

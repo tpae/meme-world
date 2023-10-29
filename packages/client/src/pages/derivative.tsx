@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { handleError, templateIdToEntityKey, trimHash } from "../lib/utils";
-import { getComponentValue } from "@latticexyz/recs";
+import { getComponentValueStrict } from "@latticexyz/recs";
 
 export const Derivative = () => {
   const navigate = useNavigate();
@@ -39,17 +39,17 @@ export const Derivative = () => {
     async (templateId: bigint) => {
       try {
         setLoading(true);
-        const templateImage = await getTemplateImage(templateId);
         const entity = templateIdToEntityKey(templateId);
 
-        const creatorRecord = getComponentValue(Creator, entity);
-        const nameRecord = getComponentValue(Name, entity);
-        const mintedRecord = getComponentValue(Minted, entity);
+        const templateImage = await getTemplateImage(entity as `0x${string}`);
+        const creatorRecord = getComponentValueStrict(Creator, entity);
+        const nameRecord = getComponentValueStrict(Name, entity);
+        const mintedRecord = getComponentValueStrict(Minted, entity);
 
         setTemplateImage(templateImage);
-        setCreator(creatorRecord?.value as string);
-        setName(nameRecord?.value as string);
-        setMinted(mintedRecord?.value as boolean);
+        setCreator(creatorRecord.value as string);
+        setName(nameRecord.value as string);
+        setMinted(mintedRecord.value as boolean);
       } catch (err) {
         handleError(err);
       } finally {
@@ -64,7 +64,7 @@ export const Derivative = () => {
       toast.error("Missing caption");
       return;
     }
-    if (!templateId) return;
+    if (templateId === undefined) return;
 
     try {
       setLoading(true);
@@ -86,7 +86,7 @@ export const Derivative = () => {
   }, [caption, navigate, templateId, mintDerivative]);
 
   useEffect(() => {
-    if (templateId) {
+    if (templateId !== undefined) {
       fetchTemplateData(templateId);
     }
   }, [fetchTemplateData, templateId]);

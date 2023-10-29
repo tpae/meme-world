@@ -28,7 +28,7 @@ export function createSystemCalls(
    *   syncToRecs
    *   (https://github.com/latticexyz/mud/blob/main/templates/react/packages/client/src/mud/setupNetwork.ts#L77-L83).
    */
-  { worldContract, memeWorldTemplatesContract, waitForTransaction, publicClient }: SetupNetworkResult
+  { worldContract, memeWorldTemplatesContract, memeWorldContract, waitForTransaction, publicClient }: SetupNetworkResult
 ) {
   const createTemplate = async (name: string) => {
     const tx = await worldContract.write.createTemplate([name]);
@@ -57,8 +57,8 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
-  const getTemplateImage = async (templateId: bigint) => {
-    const results = await worldContract.read.getTemplateImage([templateId]);
+  const getTemplateImage = async (templateEntityKey: `0x${string}`) => {
+    const results = await worldContract.read.getTemplateImage([templateEntityKey]);
 
     return results;
   };
@@ -86,6 +86,18 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  const getAllMintedDerivatives = async () => {
+    const total = await memeWorldContract.read.totalSupply();
+
+    const derivativeIds: bigint[] = [];
+    for (let i = 0; i < total; i += 1) {
+      const tokenId = await memeWorldContract.read.tokenByIndex([BigInt(i)]);
+      derivativeIds.push(tokenId);
+    }
+
+    return derivativeIds;
+  };
+
   const derivativeTokenURI = async (tokenId: bigint) => {
     const results = await worldContract.read.derivativeTokenURI([tokenId]);
 
@@ -100,6 +112,7 @@ export function createSystemCalls(
     mintTemplate,
     templateTokenURI,
     mintDerivative,
+    getAllMintedDerivatives,
     derivativeTokenURI,
   };
 }

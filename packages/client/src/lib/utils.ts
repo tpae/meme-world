@@ -49,3 +49,9 @@ export function templateIdToEntityKey(templateId: bigint) {
     encodePacked(["string", "uint256"], ["template", templateId])
   ) as Entity;
 }
+
+export function derivativeIdToEntityKey(derivativeId: bigint) {
+  return keccak256(
+    encodePacked(["string", "uint256"], ["derivative", derivativeId])
+  ) as Entity;
+}

@@ -48,9 +48,8 @@ contract TemplateSystem is DrawableSystem {
         emit TemplateMinted(_msgSender(), templateId);
     }
 
-    function getTemplateImage(uint256 templateId) public view returns (string memory) {
-        bytes32 entityKey = templateIdToEntityKey(templateId);
-        string memory svgPaths = generateSVGPaths(entityKey);
+    function getTemplateImage(bytes32 templateEntityKey) public view returns (string memory) {
+        string memory svgPaths = generateSVGPaths(templateEntityKey);
 
         string memory image = string(
             abi.encodePacked(
@@ -74,7 +73,7 @@ contract TemplateSystem is DrawableSystem {
     function templateTokenURI(uint256 tokenId) public view returns (string memory) {
         bytes32 entityKey = templateIdToEntityKey(tokenId);
         string memory name = Name.get(entityKey);
-        string memory image = getTemplateImage(tokenId);
+        string memory image = getTemplateImage(entityKey);
 
         return string(
             abi.encodePacked(
