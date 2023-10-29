@@ -13,10 +13,9 @@ import {
   Hex,
   parseEther,
   ClientConfig,
-  EIP1193Provider,
 } from "viem";
 import { createFaucetService } from "@latticexyz/services/faucet";
-import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
+import { syncToRecs } from "@latticexyz/store-sync/recs";
 
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
