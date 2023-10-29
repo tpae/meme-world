@@ -85,6 +85,18 @@ export const Derivative = () => {
     }
   }, [caption, navigate, templateId, mintDerivative]);
 
+  const handlePagination = useCallback(
+    (newIndex: number) => {
+      if (!templateIds || !templateIds.length) return;
+
+      const wrappedIndex = (newIndex + templateIds.length) % templateIds.length;
+
+      setTemplateId(templateIds[wrappedIndex]);
+      setIndex(wrappedIndex);
+    },
+    [templateIds]
+  );
+
   useEffect(() => {
     if (templateId !== undefined) {
       fetchTemplateData(templateId);
@@ -94,18 +106,6 @@ export const Derivative = () => {
   useEffect(() => {
     fetchAllTemplates();
   }, [fetchAllTemplates]);
-
-  useEffect(() => {
-    if (templateIds) {
-      if (templateIds[index]) {
-        setTemplateId(templateIds[index]);
-      } else if (index > templateIds.length - 1) {
-        setIndex(0);
-      } else if (index < 0) {
-        setIndex(templateIds.length - 1);
-      }
-    }
-  }, [index, templateIds]);
 
   return (
     <>
@@ -133,7 +133,7 @@ export const Derivative = () => {
           <Button
             className="bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-gray-800"
             variant="ghost"
-            onClick={() => setIndex(index - 1)}
+            onClick={() => handlePagination(index - 1)}
           >
             <svg
               className=" w-5 h-5"
@@ -155,7 +155,7 @@ export const Derivative = () => {
           <Button
             className="bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-gray-800"
             variant="ghost"
-            onClick={() => setIndex(index + 1)}
+            onClick={() => handlePagination(index + 1)}
           >
             <svg
               className=" w-5 h-5"

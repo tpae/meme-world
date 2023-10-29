@@ -78,7 +78,7 @@ export function createSystemCalls(
       templateIds.push(tokenId);
     }
 
-    return templateIds;
+    return templateIds.reverse();
   };
 
   const mintDerivative = async (templateId: bigint, caption: string) => {
@@ -95,7 +95,7 @@ export function createSystemCalls(
       derivativeIds.push(tokenId);
     }
 
-    return derivativeIds;
+    return derivativeIds.reverse();
   };
 
   const derivativeTokenURI = async (tokenId: bigint) => {

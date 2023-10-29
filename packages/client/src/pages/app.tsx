@@ -67,6 +67,19 @@ export const App = () => {
     [Creator, Name, Caption, TemplateKey, getTemplateImage]
   );
 
+  const handlePagination = useCallback(
+    (newIndex: number) => {
+      if (!derivativeIds || !derivativeIds.length) return;
+
+      const wrappedIndex =
+        (newIndex + derivativeIds.length) % derivativeIds.length;
+
+      setDerivativeId(derivativeIds[wrappedIndex]);
+      setIndex(wrappedIndex);
+    },
+    [derivativeIds]
+  );
+
   useEffect(() => {
     if (derivativeId !== undefined) {
       fetchDerivativeData(derivativeId);
@@ -76,18 +89,6 @@ export const App = () => {
   useEffect(() => {
     fetchAllDerivatives();
   }, [fetchAllDerivatives]);
-
-  useEffect(() => {
-    if (derivativeIds) {
-      if (derivativeIds[index]) {
-        setDerivativeId(derivativeIds[index]);
-      } else if (index > derivativeIds.length - 1) {
-        setIndex(0);
-      } else if (index < 0) {
-        setIndex(derivativeIds.length - 1);
-      }
-    }
-  }, [index, derivativeIds]);
 
   return (
     <>
@@ -99,17 +100,64 @@ export const App = () => {
           Create New Meme
         </Button>
       </div>
-      <Card>
-        <CardContent className="p-0">
-          <img
-            alt="Selected Image"
-            className="h-auto w-auto object-cover transition-all hover:scale-105 rounded-md"
-            height="443"
-            src={templateImage}
-            width="443"
-          />
-        </CardContent>
-      </Card>
+      <div className="relative max-w-md mb-4">
+        <Card>
+          <CardContent className="p-0">
+            <img
+              alt="Selected Image"
+              className="h-auto w-auto object-cover transition-all hover:scale-105 rounded-md"
+              height="443"
+              src={templateImage}
+              width="443"
+            />
+          </CardContent>
+        </Card>
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+          <Button
+            className="bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-gray-800"
+            variant="ghost"
+            onClick={() => handlePagination(index - 1)}
+          >
+            <svg
+              className=" w-5 h-5"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </Button>
+        </div>
+
+        <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+          <Button
+            className="bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-gray-800"
+            variant="ghost"
+            onClick={() => handlePagination(index + 1)}
+          >
+            <svg
+              className=" w-5 h-5"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </Button>
+        </div>
+      </div>
       {caption && (
         <p className="mt-4 text-center italic">&quot;{caption}&quot;</p>
       )}
