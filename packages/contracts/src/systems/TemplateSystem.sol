@@ -11,6 +11,9 @@ import {DrawableSystem} from "../DrawableSystem.sol";
 import {templateIdToEntityKey} from "../entityKey.sol";
 
 contract TemplateSystem is DrawableSystem {
+    event TemplateCreated(address indexed creator, uint256 indexed templateId);
+    event TemplateMinted(address indexed creator, uint256 indexed templateId);
+
     function createTemplate(string calldata name) public returns (uint256) {
         uint256 templateId = TemplateIdIncrement.get();
         bytes32 entityKey = templateIdToEntityKey(templateId);
@@ -18,6 +21,8 @@ contract TemplateSystem is DrawableSystem {
         Name.set(entityKey, name);
         Creator.set(entityKey, _msgSender());
         TemplateIdIncrement.set(templateId + 1);
+
+        emit TemplateCreated(_msgSender(), templateId);
 
         return templateId;
     }
@@ -39,6 +44,8 @@ contract TemplateSystem is DrawableSystem {
 
         IMemeWorld(GameConfig.getTemplateAddress()).mint(_msgSender(), templateId);
         Minted.set(entityKey, true);
+
+        emit TemplateMinted(_msgSender(), templateId);
     }
 
     function templateTokenURI(uint256 tokenId) public view returns (string memory) {

@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 
 export const RootPage = () => {
   return (
     <>
+      <Toaster position="bottom-center" />
       <header className="sticky top-0 flex justify-end w-full p-4 bg-zinc-100 dark:bg-zinc-900">
         <Button variant="outline">Connect Wallet</Button>
       </header>

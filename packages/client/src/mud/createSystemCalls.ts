@@ -2,7 +2,8 @@
  * Create the system calls that the client can use to ask
  * for changes in the World state (using the System contracts).
  */
-
+import { decodeEventLog } from "viem";
+import ITemplateSystemAbi from "contracts/out/TemplateSystem.sol/TemplateSystem.abi.json";
 import { SetupNetworkResult } from "./setupNetwork";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
@@ -27,11 +28,23 @@ export function createSystemCalls(
    *   syncToRecs
    *   (https://github.com/latticexyz/mud/blob/main/templates/react/packages/client/src/mud/setupNetwork.ts#L77-L83).
    */
-  { worldContract, waitForTransaction }: SetupNetworkResult
+  { worldContract, waitForTransaction, publicClient }: SetupNetworkResult
 ) {
   const createTemplate = async (name: string) => {
     const tx = await worldContract.write.createTemplate([name]);
     await waitForTransaction(tx);
+
+    const txReceipt = await publicClient.getTransactionReceipt({
+      hash: tx,
+    });
+
+    const parsed = decodeEventLog({
+      abi: ITemplateSystemAbi,
+      data: txReceipt.logs[txReceipt.logs.length - 1].data,
+      topics: txReceipt.logs[txReceipt.logs.length - 1].topics,
+    });
+
+    return (parsed.args as any).templateId as bigint;
   };
 
   const drawPaths = async (templateId: bigint, paths: [][]) => {
@@ -46,7 +59,7 @@ export function createSystemCalls(
 
   const templateTokenURI = async (tokenId: bigint) => {
     const results = await worldContract.read.templateTokenURI([tokenId]);
-   
+
     return results;
   };
 
@@ -57,16 +70,16 @@ export function createSystemCalls(
 
   const derivativeTokenURI = async (tokenId: bigint) => {
     const results = await worldContract.read.derivativeTokenURI([tokenId]);
-   
+
     return results;
   };
-  
+
   return {
     createTemplate,
     drawPaths,
     mintTemplate,
     templateTokenURI,
     mintDerivative,
-    derivativeTokenURI
+    derivativeTokenURI,
   };
 }

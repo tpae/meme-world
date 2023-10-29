@@ -19,6 +19,8 @@ import {DrawableSystem} from "../DrawableSystem.sol";
 import {templateIdToEntityKey, derivativeIdToEntityKey, getReservationEntityKey} from "../entityKey.sol";
 
 contract DerivativeSystem is DrawableSystem {
+    event DerivativeMinted(address indexed creator, uint256 indexed derivativeId);
+
     function mintDerivative(uint256 templateId, string calldata caption) public returns (uint256) {
         bytes32 templateEntityKey = templateIdToEntityKey(templateId);
         require(Minted.get(templateEntityKey), "template not minted");
@@ -36,6 +38,8 @@ contract DerivativeSystem is DrawableSystem {
         DerivativeIdIncrement.set(derivativeId + 1);
 
         IMemeWorld(GameConfig.getContractAddress()).mint(_msgSender(), derivativeId);
+
+        emit DerivativeMinted(_msgSender(), derivativeId);
 
         return derivativeId;
     }

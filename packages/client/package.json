@@ -31,6 +31,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",
     "rxjs": "7.5.5",
+    "sonner": "^1.0.3",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "viem": "1.14.0"
