@@ -2,10 +2,9 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import ReactDOM from "react-dom/client";
-import { optimism } from "viem/chains";
-import { mudFoundry } from "@latticexyz/common/chains";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { setup } from "./mud/setup";
+import { supportedChains } from "./mud/supportedChains";
 import { MUDProvider } from "./MUDContext";
 import mudConfig from "contracts/mud.config";
 import { RootPage } from "./pages/root";
@@ -18,7 +17,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import "../globals.css";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [optimism, mudFoundry],
+  supportedChains,
   [publicProvider()]
 );
 
