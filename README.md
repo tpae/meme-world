@@ -14,7 +14,7 @@ By leveraging the principles of MUD, I could capture each brush stroke, serializ
 
 The result? Magic.
 
-[video here]
+https://github.com/tpae/meme-world/assets/189663/7e4c9dd4-ee88-4b8c-8383-ad59830e719e
 
 ### Features
 
