@@ -5,10 +5,10 @@ import { MUDProvider } from "./MUDContext";
 import mudConfig from "contracts/mud.config";
 import { RootPage } from "./pages/root";
 import { ErrorPage } from "./pages/error";
-import { App } from "./App";
-import { TemplateCreate } from "./TemplateCreate";
-import { TemplateMint } from "./TemplateMint";
-import { Derivative } from "./Derivative";
+import { App } from "./pages/app";
+import { TemplateCreate } from "./pages/template-create";
+import { TemplateMint } from "./pages/template-mint";
+import { Derivative } from "./pages/derivative";
 import "../globals.css";
 
 const router = createBrowserRouter([

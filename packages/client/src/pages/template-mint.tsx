@@ -3,7 +3,7 @@ import { keccak256, encodePacked } from "viem";
 import { useComponentValue } from "@latticexyz/react";
 import { Entity } from "@latticexyz/recs";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMUD } from "./MUDContext";
+import { useMUD } from "../MUDContext";
 import { CardContent, Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,7 @@ import {
   serializePath,
   templateIdToEntityKey,
   trimHash,
-} from "./lib/utils";
+} from "../lib/utils";
 
 export const TemplateMint = () => {
   const navigate = useNavigate();

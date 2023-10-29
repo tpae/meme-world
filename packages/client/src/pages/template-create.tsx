@@ -1,11 +1,11 @@
-import { useMUD } from "./MUDContext";
+import { useMUD } from "../MUDContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import { handleError } from "./lib/utils";
+import { handleError } from "../lib/utils";
 
 export const TemplateCreate = () => {
   const navigate = useNavigate();

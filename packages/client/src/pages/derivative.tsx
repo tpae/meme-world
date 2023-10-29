@@ -1,4 +1,4 @@
-import { useMUD } from "./MUDContext";
+import { useMUD } from "../MUDContext";
 import { CardContent, Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { handleError, templateIdToEntityKey, trimHash } from "./lib/utils";
+import { handleError, templateIdToEntityKey, trimHash } from "../lib/utils";
 import { getComponentValue } from "@latticexyz/recs";
 
 export const Derivative = () => {
