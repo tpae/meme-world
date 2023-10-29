@@ -8,7 +8,7 @@ import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/
 import {IWorld} from "./codegen/world/IWorld.sol";
 import {IMemeWorld} from "./IMemeWorld.sol";
 
-contract MemeWorldTemplates is IMemeWorld, ERC721, ERC721Enumerable, AccessControl {
+contract MemeWorldTemplates is ERC721, ERC721Enumerable, AccessControl, IMemeWorld {
     IWorld private _world;
 
     constructor(address worldAddress) ERC721("Meme World Templates", "MEWT") {

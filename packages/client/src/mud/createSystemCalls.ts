@@ -28,7 +28,7 @@ export function createSystemCalls(
    *   syncToRecs
    *   (https://github.com/latticexyz/mud/blob/main/templates/react/packages/client/src/mud/setupNetwork.ts#L77-L83).
    */
-  { worldContract, waitForTransaction, publicClient }: SetupNetworkResult
+  { worldContract, memeWorldTemplatesContract, waitForTransaction, publicClient }: SetupNetworkResult
 ) {
   const createTemplate = async (name: string) => {
     const tx = await worldContract.write.createTemplate([name]);
@@ -69,6 +69,18 @@ export function createSystemCalls(
     return results;
   };
 
+  const getAllMintedTemplates = async () => {
+    const total = await memeWorldTemplatesContract.read.totalSupply();
+
+    const templateIds: bigint[] = [];
+    for (let i = 0; i < total; i += 1) {
+      const tokenId = await memeWorldTemplatesContract.read.tokenByIndex([BigInt(i)]);
+      templateIds.push(tokenId);
+    }
+
+    return templateIds;
+  };
+
   const mintDerivative = async (templateId: bigint, caption: string) => {
     const tx = await worldContract.write.mintDerivative([templateId, caption]);
     await waitForTransaction(tx);
@@ -84,6 +96,7 @@ export function createSystemCalls(
     createTemplate,
     drawPaths,
     getTemplateImage,
+    getAllMintedTemplates,
     mintTemplate,
     templateTokenURI,
     mintDerivative,

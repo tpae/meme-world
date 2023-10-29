@@ -12,7 +12,12 @@ import {
   ReactSketchCanvasRef,
 } from "@/components/react-sketch-canvas";
 import { toast } from "sonner";
-import { handleError, serializePath, trimHash } from "./lib/utils";
+import {
+  handleError,
+  serializePath,
+  templateIdToEntityKey,
+  trimHash,
+} from "./lib/utils";
 
 export const TemplateMint = () => {
   const navigate = useNavigate();
@@ -21,12 +26,7 @@ export const TemplateMint = () => {
   const entity = useMemo(
     () =>
       params.templateId
-        ? (keccak256(
-            encodePacked(
-              ["string", "uint256"],
-              ["template", BigInt(params.templateId)]
-            )
-          ) as Entity)
+        ? templateIdToEntityKey(BigInt(params.templateId))
         : undefined,
     [params]
   );
