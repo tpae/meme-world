@@ -47,7 +47,7 @@ export function createSystemCalls(
     return (parsed.args as any).templateId as bigint;
   };
 
-  const drawPaths = async (templateId: bigint, paths: [][]) => {
+  const drawPaths = async (templateId: bigint, paths: bigint[][]) => {
     const tx = await worldContract.write.drawPaths([templateId, paths]);
     await waitForTransaction(tx);
   };
@@ -55,6 +55,12 @@ export function createSystemCalls(
   const mintTemplate = async (templateId: bigint) => {
     const tx = await worldContract.write.mintTemplate([templateId]);
     await waitForTransaction(tx);
+  };
+
+  const getTemplateImage = async (templateId: bigint) => {
+    const results = await worldContract.read.getTemplateImage([templateId]);
+
+    return results;
   };
 
   const templateTokenURI = async (tokenId: bigint) => {
@@ -77,6 +83,7 @@ export function createSystemCalls(
   return {
     createTemplate,
     drawPaths,
+    getTemplateImage,
     mintTemplate,
     templateTokenURI,
     mintDerivative,

@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-import * as React from "react";
 import { CanvasPath, Point } from "../types";
 
 export const line = (pointA: Point, pointB: Point) => {
@@ -8,23 +7,12 @@ export const line = (pointA: Point, pointB: Point) => {
 
   return {
     length: Math.sqrt(lengthX ** 2 + lengthY ** 2),
-    // angle: Math.atan2(lengthY, lengthX),
   };
 };
 
 const controlPoint = (controlPoints: ControlPoints): [number, number] => {
   const { current } = controlPoints;
-
-  // const smoothing = 0;
-
-  // const o = line(p, n);
-
-  // const angle = o.angle + (reverse ? Math.PI : 0);
-  // const length = o.length * smoothing;
-
-  const { x } = current;
-  const { y } = current;
-
+  const { x, y } = current;
   return [x, y];
 };
 

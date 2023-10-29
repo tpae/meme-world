@@ -5,10 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import { handleError } from "./lib/utils";
 
 export const TemplateCreate = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
   const {
     systemCalls: { createTemplate },
   } = useMUD();
@@ -19,11 +21,23 @@ export const TemplateCreate = () => {
       return;
     }
 
-    toast.loading("Creating...");
-    const templateId = await createTemplate(name);
-    toast.success("Success!");
+    try {
+      setLoading(true);
+      const toastId = toast("handleCreate");
+      toast.loading("Creating...", {
+        id: toastId,
+      });
+      const templateId = await createTemplate(name);
+      toast.success("Created.", {
+        id: toastId,
+      });
 
-    navigate(`/template/${templateId}`);
+      navigate(`/template/${templateId}`);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setLoading(false);
+    }
   }, [name, navigate, createTemplate]);
 
   return (
@@ -33,7 +47,7 @@ export const TemplateCreate = () => {
           Back
         </Button>
         <div>
-          <Button variant="default" onClick={handleCreate}>
+          <Button disabled={loading} variant="default" onClick={handleCreate}>
             Create
           </Button>
         </div>

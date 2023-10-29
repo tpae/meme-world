@@ -56,7 +56,7 @@ contract DerivativeSystem is DrawableSystem {
                 bytes(
                     abi.encodePacked(
                         '<?xml version="1.0" encoding="UTF-8"?>',
-                        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 420 420" width="420" height="420">',
+                        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 442 442" width="442" height="442">',
                         svgPaths,
                         "</svg>"
                     )

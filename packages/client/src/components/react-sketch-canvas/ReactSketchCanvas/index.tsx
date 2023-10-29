@@ -14,6 +14,7 @@ export interface ReactSketchCanvasProps
   eraserWidth?: number;
   onChange?: (updatedPaths: CanvasPath[]) => void;
   onStroke?: (path: CanvasPath, isEraser: boolean) => void;
+  onMouseUp?: (path: CanvasPath) => void;
   strokeColor?: string;
   strokeWidth?: number;
   withTimestamp?: boolean;
@@ -21,6 +22,7 @@ export interface ReactSketchCanvasProps
 
 export interface ReactSketchCanvasRef {
   eraseMode: (_erase: boolean) => void;
+  setDrawingEnabled: (_drawMode: boolean) => void;
   clearCanvas: () => void;
   undo: () => void;
   redo: () => void;
@@ -56,11 +58,13 @@ export const ReactSketchCanvas = React.forwardRef<
     svgStyle = {},
     onChange = (_paths: CanvasPath[]): void => undefined,
     onStroke = (_path: CanvasPath, _isEraser: boolean): void => undefined,
+    onMouseUp = (_path: CanvasPath): void => undefined,
     withTimestamp = false,
     withViewBox = false,
   } = props;
 
   const svgCanvas = React.createRef<CanvasRef>();
+  const [drawingEnabled, setDrawingEnabled] = React.useState<boolean>(true);
   const [drawMode, setDrawMode] = React.useState<boolean>(true);
   const [isDrawing, setIsDrawing] = React.useState<boolean>(false);
   const [resetStack, setResetStack] = React.useState<CanvasPath[]>([]);
@@ -91,6 +95,9 @@ export const ReactSketchCanvas = React.forwardRef<
   React.useImperativeHandle(ref, () => ({
     eraseMode: (erase: boolean): void => {
       setDrawMode(!erase);
+    },
+    setDrawingEnabled: (drawingEnabled: boolean): void => {
+      setDrawingEnabled(drawingEnabled);
     },
     clearCanvas: (): void => {
       setResetStack([...currentPaths]);
@@ -184,6 +191,9 @@ export const ReactSketchCanvas = React.forwardRef<
   }));
 
   const handlePointerDown = (point: Point, isEraser = false): void => {
+    if (!drawingEnabled) {
+      return;
+    }
     setIsDrawing(true);
     setUndoStack([]);
 
@@ -208,6 +218,10 @@ export const ReactSketchCanvas = React.forwardRef<
   };
 
   const handlePointerMove = (point: Point): void => {
+    if (!drawingEnabled) {
+      return;
+    }
+
     if (!isDrawing) return;
 
     const currentStroke = currentPaths.slice(-1)[0];
@@ -219,17 +233,23 @@ export const ReactSketchCanvas = React.forwardRef<
   };
 
   const handlePointerUp = (): void => {
+    if (!drawingEnabled) {
+      return;
+    }
+
     if (!isDrawing) {
       return;
     }
 
     setIsDrawing(false);
 
+    const currentStroke = currentPaths.slice(-1)?.[0] ?? null;
+
+    onMouseUp(currentStroke);
+
     if (!withTimestamp) {
       return;
     }
-
-    const currentStroke = currentPaths.slice(-1)?.[0] ?? null;
 
     if (currentStroke === null) {
       return;

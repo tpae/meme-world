@@ -90,7 +90,15 @@ contract DrawableSystem is System {
     }
 
     function floatize(uint256 number) internal pure returns (string memory) {
-        return Strings.toString(number);
+        uint256 mainPart = number / 10000;
+        uint256 decimalPart = number % 10000;
+
+        string memory decimalString = Strings.toString(decimalPart);
+        while (bytes(decimalString).length < 4) {
+            decimalString = string(abi.encodePacked("0", decimalString));
+        }
+
+        return string(abi.encodePacked(Strings.toString(mainPart), ".", decimalString));
     }
 
     function pack(uint128 a, uint128 b) internal pure returns (uint256) {

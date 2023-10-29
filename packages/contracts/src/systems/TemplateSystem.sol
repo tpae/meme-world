@@ -48,24 +48,33 @@ contract TemplateSystem is DrawableSystem {
         emit TemplateMinted(_msgSender(), templateId);
     }
 
-    function templateTokenURI(uint256 tokenId) public view returns (string memory) {
-        bytes32 entityKey = templateIdToEntityKey(tokenId);
+    function getTemplateImage(uint256 templateId) public view returns (string memory) {
+        bytes32 entityKey = templateIdToEntityKey(templateId);
         string memory svgPaths = generateSVGPaths(entityKey);
-        string memory name = Name.get(entityKey);
 
-        bytes memory image = abi.encodePacked(
-            "data:image/svg+xml;base64,",
-            Base64.encode(
-                bytes(
-                    abi.encodePacked(
-                        '<?xml version="1.0" encoding="UTF-8"?>',
-                        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 420 420" width="420" height="420">',
-                        svgPaths,
-                        "</svg>"
+        string memory image = string(
+            abi.encodePacked(
+                "data:image/svg+xml;base64,",
+                Base64.encode(
+                    bytes(
+                        abi.encodePacked(
+                            '<?xml version="1.0" encoding="UTF-8"?>',
+                            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 442 442" width="442" height="442">',
+                            svgPaths,
+                            "</svg>"
+                        )
                     )
                 )
             )
         );
+
+        return image;
+    }
+
+    function templateTokenURI(uint256 tokenId) public view returns (string memory) {
+        bytes32 entityKey = templateIdToEntityKey(tokenId);
+        string memory name = Name.get(entityKey);
+        string memory image = getTemplateImage(tokenId);
 
         return string(
             abi.encodePacked(
