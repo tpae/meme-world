@@ -1,4 +1,13 @@
+import {
+  getDefaultWallets,
+  RainbowKitProvider,
+  lightTheme,
+} from "@rainbow-me/rainbowkit";
+import { WagmiConfig, createConfig, configureChains } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
 import ReactDOM from "react-dom/client";
+import { optimism } from "viem/chains";
+import { mudFoundry } from "@latticexyz/common/chains";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
@@ -9,7 +18,26 @@ import { App } from "./pages/app";
 import { TemplateCreate } from "./pages/template-create";
 import { TemplateMint } from "./pages/template-mint";
 import { Derivative } from "./pages/derivative";
+import "@rainbow-me/rainbowkit/styles.css";
 import "../globals.css";
+
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [optimism, mudFoundry],
+  [publicProvider()]
+);
+
+const { connectors } = getDefaultWallets({
+  appName: "MemeWorld",
+  projectId: "b9746a66be4150b1b11884f16161437e",
+  chains,
+});
+
+const config = createConfig({
+  autoConnect: true,
+  publicClient,
+  webSocketPublicClient,
+  connectors,
+});
 
 const router = createBrowserRouter([
   {
@@ -43,9 +71,13 @@ const root = ReactDOM.createRoot(rootElement);
 
 setup().then(async (result) => {
   root.render(
-    <MUDProvider value={result}>
-      <RouterProvider router={router} />
-    </MUDProvider>
+    <WagmiConfig config={config}>
+      <RainbowKitProvider chains={chains}>
+        <MUDProvider value={result}>
+          <RouterProvider router={router} />
+        </MUDProvider>
+      </RainbowKitProvider>
+    </WagmiConfig>
   );
 
   // https://vitejs.dev/guide/env-and-mode.html
