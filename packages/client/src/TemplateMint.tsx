@@ -1,24 +1,40 @@
-// import { useComponentValue } from "@latticexyz/react";
-// import { useMUD } from "./MUDContext";
-// import { singletonEntity } from "@latticexyz/store-sync/recs";
+import { useMemo, useRef } from "react";
+import { keccak256, encodePacked } from "viem";
+import { useComponentValue } from "@latticexyz/react";
+import { Entity } from "@latticexyz/recs";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMUD } from "./MUDContext";
 import { CardContent, Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import {
   ReactSketchCanvas,
   ReactSketchCanvasRef,
-} from "./components/react-sketch-canvas";
-import { useRef } from "react";
+} from "@/components/react-sketch-canvas";
 
 export const TemplateMint = () => {
   const navigate = useNavigate();
+  const params = useParams<{ templateId: string }>();
   const canvas = useRef<ReactSketchCanvasRef | null>(null);
-  // const {
-  //   components: { Counter },
-  //   systemCalls: { increment },
-  // } = useMUD();
+  const entity = useMemo(
+    () =>
+      params.templateId
+        ? (keccak256(
+            encodePacked(
+              ["string", "uint256"],
+              ["template", BigInt(params.templateId)]
+            )
+          ) as Entity)
+        : undefined,
+    [params]
+  );
+  const {
+    components: { Creator, Name, Minted },
+    systemCalls: { mintTemplate },
+  } = useMUD();
 
-  // const counter = useComponentValue(Counter, singletonEntity);
+  const creator = useComponentValue(Creator, entity);
+  const name = useComponentValue(Name, entity);
+  const minted = useComponentValue(Minted, entity);
 
   return (
     <>
@@ -54,19 +70,21 @@ export const TemplateMint = () => {
           <tbody>
             <tr className="text-zinc-900 dark:text-zinc-100">
               <td className="px-4 py-1 bold">Template ID:</td>
-              <td className="px-4 py-1 text-right">420</td>
+              <td className="px-4 py-1 text-right">{params.templateId}</td>
             </tr>
             <tr className="text-zinc-900 dark:text-zinc-100">
               <td className="px-4 py-1 bold">Template Name:</td>
-              <td className="px-4 py-1 text-right">Meme World #1</td>
+              <td className="px-4 py-1 text-right">{name?.value}</td>
             </tr>
             <tr className="text-zinc-900 dark:text-zinc-100">
               <td className="px-4 py-1 bold">Template Creator:</td>
-              <td className="px-4 py-1 text-right">0xabc...def</td>
+              <td className="px-4 py-1 text-right">{creator?.value}</td>
             </tr>
             <tr className="text-zinc-900 dark:text-zinc-100">
               <td className="px-4 py-1 bold">Minted:</td>
-              <td className="px-4 py-1 text-right">Yes</td>
+              <td className="px-4 py-1 text-right">
+                {minted?.value ? "Yes" : "No"}
+              </td>
             </tr>
           </tbody>
         </table>
