@@ -2,7 +2,7 @@
 
 Meme World is a 100% on-chain meme creator with an experimental on-chain drawing interface built with MUD 2.0.
 
-It's fully functional and is currently live on Optimism, and it can be viewed here: [poof]
+It's fully functional and is currently live on Optimism, and it can be viewed here: https://memeworld.lol/
 
 This project was built over 72 hours for AW Hack 2023. :v:
 
@@ -26,7 +26,7 @@ https://github.com/tpae/meme-world/assets/189663/7e4c9dd4-ee88-4b8c-8383-ad59830
   - Write a Caption
   - Mint the Meme as an NFT (ERC-721)
 
-The NFT's metadata is stored 100% on-chain, there's no IPFS or external place for storing the data.
+The NFT's metadata is stored 100% on-chain; there's no IPFS or external place for storing the data.
 
 ### Nice to Have Features
 
@@ -36,5 +36,5 @@ The NFT's metadata is stored 100% on-chain, there's no IPFS or external place fo
 
 ### Potential Use Cases
 
-- Proof-of-Sketch - additional security layer for hand drawn digital signatures?
+- Proof-of-Sketch - additional security layer for hand-drawn digital signatures?
 - On-chain SVG Library - there's much room for improvement
