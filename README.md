@@ -6,6 +6,12 @@ It's fully functional and is currently live on Optimism, and it can be viewed he
 
 This project was built over 72 hours for AW Hack 2023. :v:
 
+Live NFT Collections:
+* Templates - https://opensea.io/assets/optimism/0x3bc5003c695fd25dbc2c9ea1915ba90ed5041402
+* Memes - https://opensea.io/assets/optimism/0x0068e6901ee983229027ae78f04e24febc72862f
+
+Please avoid dark mode on OpenSea because SVGs are transparent 😰
+
 ### Inspiration
 
 Is it possible to store an entire hand-drawn picture on the EVM?
